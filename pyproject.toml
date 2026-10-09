@@ -1,0 +1,9 @@
+# Tool configuration only, on purpose no packaging: the project is cloned and
+# started directly, not installed. At runtime the project root is on sys.path
+# anyway, because testbench.py lives there. The only gap was pytest, and
+# pythonpath closes it here declaratively, instead of a conftest.py changing
+# sys.path.
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

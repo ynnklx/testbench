@@ -1,0 +1,12 @@
+.pio/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# New recordings land in the top level of data/<stage>/. Only data that was
+# moved into a named series folder (e.g. Hauptmessreihe/, Demo/) is published.
+data/raw/*.csv
+data/processed/*.csv
+data/comparisons/*.csv
+data/plots/*.png

@@ -1,0 +1,44 @@
+{
+  "schema_version": 2,
+  "calibrated_at": "2026-09-02",
+  "provisional": false,
+  "comment": "5-point calibration via host/calibrate.py",
+  "unit": "grams",
+  "reference_points": [
+    {
+      "mass_g": 0.0,
+      "raw_mean": -155932.205,
+      "raw_sd": 42.636,
+      "n": 200
+    },
+    {
+      "mass_g": 207.0,
+      "raw_mean": -358385.605,
+      "raw_sd": 35.782,
+      "n": 200
+    },
+    {
+      "mass_g": 389.0,
+      "raw_mean": -526797.45,
+      "raw_sd": 66.263,
+      "n": 200
+    },
+    {
+      "mass_g": 576.0,
+      "raw_mean": -716468.145,
+      "raw_sd": 126.067,
+      "n": 200
+    },
+    {
+      "mass_g": 1074.0,
+      "raw_mean": -1223082.255,
+      "raw_sd": 1160.806,
+      "n": 200
+    }
+  ],
+  "fit": {
+    "method": "least-squares-linear",
+    "raw_zero": -149644.865846109,
+    "counts_per_gram": -993.9631926845303
+  }
+}

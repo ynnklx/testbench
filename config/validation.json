@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "_note": "Most thresholds were derived 2026-09-11 from the V1 validation campaign data - reused V1's own host/calibration.py and analyse/stage_summary.py rather than recomputing with a different convention. Summary in docs/DEVLOG.md; the analysis script itself was a throwaway, not kept. A rule whose threshold is still null (static.run_drift; every 'invalid_above'/'invalid_above_pct'/'invalid_above_count'/'invalid_above_rel' except on out_of_range/current_limit_exceeded/insufficient_samples, the only codes allowed to invalidate per decision 7) is reported as unconfigured and skipped - it is never silently run against a default.",
+  "common": {
+    "current_limit_exceeded": {
+      "current_invalid_above_a": 9.9,
+      "level": "invalid",
+      "applies_to_any_direction": true,
+      "reason": "Above this current the project makes no quantitative statements. One direction over the limit invalidates the whole stage."
+    },
+    "current_limit_active": {
+      "cc_voltage_fraction": 0.90,
+      "level": "warning",
+      "invalid_above": null,
+      "reason": "Power supply in constant-current mode, detected the same way the firmware does. Diagnostic only - says nothing about whether the reading is usable."
+    },
+    "sensor_error": {
+      "level": "invalid",
+      "reason": "Thrust or current channel has no sample in the window. Without them there is no measurement."
+    },
+    "temperature_unavailable": {
+      "level": "warning",
+      "invalid_above": null,
+      "reason": "Missing E line costs the temperature, not the measurement. The RPM gap alone would not be a finding."
+    },
+    "out_of_range": {
+      "voltage_min_v": 1.0,
+      "thrust_max_g": 2000,
+      "temp_min_c": 0,
+      "temp_max_c": 85,
+      "level": "invalid",
+      "reason": "Physically impossible reading means the channel is broken, not noisy. RPM is not checked. Not derived from a measurement campaign but from already-established facts: voltage_min_v mirrors PLAUSIBLE_VOLTAGE_MIN_V in V1's analyse/stage_summary.py (below it, V+/V- are not actually measuring); thrust_max_g is the load cell's rated capacity (2 kg beam, docs/ARCHITECTURE.md hardware table); temp_min_c rules out a below-freezing reading, impossible in this indoor lab (every campaign's ambient_temp_c sits at 22-24 C); temp_max_c mirrors the firmware's own ESC_TEMP_MAX_C abort threshold (esc.cpp) - a surviving reading at/above it is not trustworthy either way. Raised 80->85 on 2026-09-17 alongside ESC_TEMP_MAX_C (docs/DEVLOG.md) - still a judgement call, not a manufacturer rating."
+    },
+    "insufficient_samples": {
+      "warning_below_fraction": 0.8,
+      "invalid_below_fraction": 0.5,
+      "reason": "Lost serial lines barely move the median as long as enough remain. Fractions are of the sample count expected for the window duration (nominal HX711 10 SPS x window_ms). Weakest-evidence numbers in this file: cooled V6 16V sweeps (2026-09-11, 3 runs) deliver 108-116% of the nominal count with no sample loss at all - no dataset here shows an actual degraded run, so both fractions are set well below that healthy floor rather than calibrated against a real bad example."
+    },
+    "high_variance": {
+      "metric": "thrust_g",
+      "warning_above_rel": 4.0,
+      "warning_above_abs_g": 0.15,
+      "invalid_above_rel": null,
+      "reason": "Robust spread (MAD). Relative above thrust_relative_floor_g, absolute below it. warning_above_rel originally set to 2.0 from cooled V6 16V (2026-09-11, 3 runs, 204 stage-episodes at/above the floor): median |CV| 0.19%, p95 0.47%, max 3.41%; legacy uncooled V6 p95 0.65%. Raised to 4.0 (2026-09-11, first real V2 session, 2 runs, same propeller/motor/voltage) after confirming the 15% sweep stage alone reproducibly shows 2.1-3.4% CV across all 5 runs now available (the original 3 V6 references plus these 2), while every other stage stays under ~1% in all of them - a real, consistent characteristic of the lowest throttle stage specifically, not a data-quality problem there. 4.0% clears the observed low-stage band with margin while staying far more sensitive than needed anywhere else in the sweep. warning_above_abs_g from the few near-floor cooled stage-episodes (MAD approx. 0.03 g) - thin evidence, only 3 of them. invalid_above_rel stays null: HIGH_VARIANCE is not one of the four codes allowed to invalidate (docs/ARCHITECTURE.md decision 7)."
+    },
+    "unstable_measurement": {
+      "mad_k": 5,
+      "warning_above_count": 2,
+      "warning_above_consecutive": 2,
+      "invalid_above_count": null,
+      "reason": "MAD outliers, counted and reported, never removed. One or two isolated samples is the known HX711 phenomenon - warning_above_count only triggers from 3 on. mad_k (a raw MAD multiple, not the 1.4826-scaled/z-score MAD) and both count thresholds calibrated against cooled V6 16V (2026-09-11, 207 stage-episodes): 86% show zero outliers at mad_k=5, runs of 2+ consecutive outliers occur in only 4.8% of episodes. warning_above_consecutive raised 1->2 (2026-10-08) after re-analysing all 24 main series/geometry runs (686 points): a run of exactly 2 consecutive outliers fired 41 times - the known HX711 phenomenon again, now just in pairs - while a run of 3+ never occurred, so 2 kept the warning firing on routine data. invalid_above_count stays null - UNSTABLE_MEASUREMENT is not one of the four codes allowed to invalidate."
+    },
+    "settling_incomplete": {
+      "warning_above_mad_multiple": 5,
+      "invalid_above": null,
+      "reason": "First versus last third of the window. Shows whether the settle time was long enough for this particular stage. Calibrated against cooled V6 16V (2026-09-11, 207 stage-episodes): |median(last third)-median(first third)|/MAD has median 2.0, p95 3.7, max 6.6. invalid_above stays null - not one of the four codes allowed to invalidate."
+    },
+    "temperature_drift": {
+      "warning_above_delta_c": 30,
+      "warning_above_abs_c": 75,
+      "invalid_above": null,
+      "reason": "Relevant to interpretation, never a reason to discard a reading - invalid_above stays null structurally. Originally 15/55 C, derived 2026-09-11 from cooled V6 16V with the 1800KV motor only (hysteresis dT median 11 C, p90 14 C; max ESC temp 54 C). Raised 2026-09-17 after the first main series pass at 12/15/18V across all three motors (18 runs, 512 stage-points, same active cooling confirmed across motors): 1800KV stayed close to the original reference (temp_c up/down n=343, p90 50 C, p95 54 C, max 59 C), but 2450KV (n=330, p90 67 C, p95 70 C, max 75 C) and 2750KV (n=340, p90 71 C, p95 76 C, max 80 C - the ESC_TEMP_MAX_C hardware abort) run reproducibly hotter at the same throttle - more current draw, not a cooling gap. Old 55 C flagged 88-95% of points for those two motors, losing all signal value. New 70/20 clears routine operation for all three motors (at/above roughly the hottest motor's own p90) while still flagging the minority of points approaching ESC_TEMP_MAX_C=80. Raised again 2026-10-08 to 75/30 after re-analysing all 24 main series/geometry runs (686 points) with 70/20: TEMPERATURE_DRIFT sat on 26% of all points and up to 91% of a hot configuration's points (2450/2750KV at 15/18V), mostly as the only finding. dT is a structural property of the sweep, not of a point - the low stages are visited first with a cold ESC and last with a hot one, so dT is largest exactly there and scales with the configuration's power. Across all 686 points |dT| p95 27 C, max 33 C: 30 only flags the most extreme runs (8 points instead of 147). warning_above_abs_c 70->75 restores the 10 C margin to ESC_TEMP_MAX_C after that was raised 80->85 on 2026-09-17. ESC_TEMP_MAX_C itself (esc.cpp) and out_of_range.temp_max_c (mirrors it) are unrelated hard safety/plausibility limits and were not touched."
+    },
+    "thrust_relative_floor_g": 0.3,
+    "zero_reference_drift": {
+      "warning_above_g": 0.15,
+      "invalid_above": null,
+      "reason": "Median of the post-run at-rest window should sit near zero. Applies to both test types - a run-level finding (docs/ARCHITECTURE.md, section Validation), not tied to any one throttle stage, since it comes from the post-run capture window, not a real measurement point. From V2 (33.5 min static 0%, 2026-09-07): thrust stays within roughly [-0.13, -0.02] g for the first ~500 s (a realistic single-run timescale); real drift only emerges after ~550 s, reaching +0.43 g by the end of the full run."
+    }
+  },
+  "sweep": {
+    "insufficient_samples": {
+      "window_ms": 2500
+    },
+    "direction_mismatch": {
+      "warning_above_pct": 8.0,
+      "warning_min_thrust_g": 2.0,
+      "invalid_above_pct": null,
+      "reason": "Quality indicator, not a defect - must never become invalid. This is the whole point of keeping the up/down sweep. warning_above_pct=8.0 from clean-pair (no other warning already flagged) thrust_g_spread_pct: cooled V6 16V (2026-09-11) max 7.19% across 94 pairs; legacy uncooled V6_legacy max 30.57%. That 'clean-pair' filter unintentionally excluded the 15% sweep stage itself (V1's own low-thrust flag, PLAUSIBLE_THRUST_MIN_G=1.0g, catches it before the filter ever sees it) - re-derived directly (2026-09-11, first real V2 session) from the same V6 runs plus 2 real session runs: the 15% stage alone shows 12-32% spread_pct across all 5 runs available (tiny absolute deltas, 0.12-0.36 g, inflated by a small denominator), while every other stage stays under ~6%. warning_min_thrust_g=2.0 gates the percentage check below that stage specifically (observed thrust there: 0.9-1.15 g across all 5 runs; the next stage up, 17.5%, sits at 7-7.3 g - comfortable separation on both sides) - mirrors V1's own PLAUSIBLE_THRUST_MIN_G precedent instead of loosening warning_above_pct itself, which would have blunted the check everywhere in the sweep, not just at 15%."
+    },
+    "single_direction_only": {
+      "level": "warning",
+      "invalid_above": null,
+      "reason": "Partner window missing or unusable. Not raised for the peak stage, which is visited once by design."
+    },
+    "below_noise_floor": {
+      "level": "warning",
+      "invalid_above": null,
+      "reason": "Thrust below thrust_relative_floor_g. Not invalid - a decoupled validation run is supposed to read zero."
+    },
+    "non_monotonic": {
+      "warning_above_sd_multiple": 4,
+      "invalid_above": null,
+      "reason": "Thrust falling against the lower neighbouring stage beyond its spread. Cooled V6 16V (2026-09-11, all 3 runs) shows a real, reproducible drop at 97.5%->100% (5.9-17.5 SD) - no other non-monotonic transition occurs anywhere in that data. warning_above_sd_multiple=4 catches this reproducible finding; no false-positive evidence available since nothing else ever triggered. invalid_above stays null."
+    }
+  },
+  "static": {
+    "insufficient_samples": {
+      "window_ms": 10000
+    },
+    "bin_seconds": 10.0,
+    "run_drift": {
+      "warning_above_pct_per_min": null,
+      "invalid_above": null,
+      "reason": "Slope of thrust and current across all windows - the actual point of a static run. A run-level finding, like zero_reference_drift (now in common). Left unconfigured: no non-zero-throttle long static run exists among the validated V1 datasets (V2's 33.5 min run was static 0%, see common.zero_reference_drift) - nothing to calibrate against yet."
+    }
+  }
+}
