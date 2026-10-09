@@ -40,17 +40,10 @@ Details and reasons for each decision: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.
 
 ## Validation
 
-Before the main series, the measurement chain was checked in six steps
-(details in [docs/DEVLOG.md](docs/DEVLOG.md)):
-
-| Check | Result |
-|---|---|
-| Load cell calibration (5 weights) | residuals 0.6–2.5 % |
-| Zero drift at rest | < 0.15 g in a typical 5 min run |
-| Interference from motor and vibration | 0.0 g with decoupled load cell |
-| INA226 vs. multimeter | voltage < 0.3 %, current 1.5–1.7 % |
-| Settle time per stage | max 924 ms measured → 1000 ms used |
-| Repeatability | SD < 1.2 % for thrust, current and RPM |
+Before the main series, the measurement chain was checked against reference
+weights, a multimeter and repeated runs. Repeated runs agree within about 1 %
+for thrust and current, and the current measurement is within about 2 % of a
+multimeter. Details in [docs/DEVLOG.md](docs/DEVLOG.md).
 
 ## Usage
 
