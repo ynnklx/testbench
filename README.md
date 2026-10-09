@@ -98,7 +98,7 @@ Full list and pin assignment in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#hard
 
 ## Development with AI support
 
-I planned the project, built the hardware, made the design decisions and did
-all measurements and validation myself. The software was written with the
-help of an AI coding assistant (Claude Code). Every change was reviewed and
-tested on the real device.
+The firmware and the Python tools were implemented with the help of Claude
+Code. I defined the test concept, requirements, test logic, interfaces and
+validation strategy myself. The resulting measurement chain was then checked
+with independent measuring equipment.

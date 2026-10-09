@@ -136,5 +136,8 @@ from the temperature difference between up and down direction, which follows
 from the sweep order and not from the point quality. Thresholds adjusted
 (`temperature_drift` 75 °C / 30 K, `unstable_measurement` from 3 outliers in a
 row). Expected result: 14 % WARNING, INVALID unchanged.
-Files analyzed before this change keep the hash of the older `validation.json`
-in their header.
+**2026-10-09 – Published data analyzed again.**
+All published runs were analyzed again with the current `validation.json`.
+All measured values and all comparison results stay exactly the same. Only
+the status labels change: 101 of 554 points go from WARNING to VALID. The 39
+INVALID points stay INVALID.

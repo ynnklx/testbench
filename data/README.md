@@ -23,10 +23,9 @@ video for the project documentation.
 
 - Every file has its provenance in the header: source file names and SHA-256,
   calibration constants, `validation.json` hash, tool version.
-- The ANALYZED files were created with the `validation.json` that was valid at
-  that time. The warning thresholds were adjusted later (see
-  [DEVLOG](../docs/DEVLOG.md), 2026-10-08). To get results with the current
-  thresholds, run `python testbench.py analyze <RAW file>` again. RAW files
-  are never changed.
+- All ANALYZED, COMPARISON and plot files were created again on 2026-10-09
+  with the current `config/validation.json` (see
+  [DEVLOG](../docs/DEVLOG.md)). The RAW files were not changed. You can repeat
+  this with `python testbench.py analyze <RAW file>`.
 - New recordings are written into the top level of each folder and are not
   published (see `.gitignore`).

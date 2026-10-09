@@ -1,10 +1,10 @@
 # schema_version=1
-# compared_at=2026-10-08T22:00:16.846002
+# compared_at=2026-10-09T21:32:32.998176
 # tool_version=2.0.0
 # label=2306-prop365-12v
 # source_count=1
 # source_1_file=2026-10-08_21-56-40_sweep_1of1_ANALYZED.csv
-# source_1_sha256=fff674daec705c059431e96cfe3c8bca58173a3109f9106742b6eeb85f6f7f0b
+# source_1_sha256=22ba36465381798877db5893d350289d0e616b3f0ef8d087df376771c1cf5094
 stage_promille,n_runs_total,n_runs_usable,included,exclude_reason,thrust_g_median,thrust_g_sd,thrust_g_cv_pct,current_a_median,current_a_sd,current_a_cv_pct,power_w_median,power_w_sd,power_w_cv_pct,g_per_w_median,g_per_w_sd,g_per_w_cv_pct,stage_deviation_pct
 150,1,1,yes,,0.7751796099400892,,,0.0525,,,0.6302625000000001,,,1.2299313539042687,,,
 175,1,1,yes,,6.437109590264992,,,0.121875,,,1.462728515625,,,4.400754836938774,,,

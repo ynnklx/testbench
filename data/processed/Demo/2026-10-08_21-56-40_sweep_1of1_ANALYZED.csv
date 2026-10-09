@@ -1,5 +1,5 @@
 # schema_version=1
-# evaluated_at=2026-10-08T22:00:16.843089
+# evaluated_at=2026-10-09T21:32:07.921734
 # tool_version=2.0.0
 # raw_source_file=2026-10-08_21-56-40_sweep_1of1_RAW.csv
 # raw_source_sha256=9645ad7a9cea7d9582a1a0df0e71799038814abc4e4ae1d0420d028cb60692fd
@@ -7,7 +7,7 @@
 # calibration_raw_zero=-149644.865846109
 # calibration_sha256=9b0988b94a70717726bb74783aed83147a31818f796e96cc3fc86a2e33011bb8
 # validation_file=config/validation.json
-# validation_sha256=197d48e4378d51b736979ea1247067f4b2c0880a6c8953604398f44a9641ebdb
+# validation_sha256=a3806657e4ec288a2289c6315c5ddabb3cb7a74864b23d4989814f1f7be53c52
 # run_status=WARNING
 # run_findings=[{"code": "ZERO_REFERENCE_DRIFT", "level": "warning", "value": 0.2746580577724132, "threshold": 0.15, "text": "Post-run at-rest thrust drifted away from zero."}]
 # raw_schema_version=1

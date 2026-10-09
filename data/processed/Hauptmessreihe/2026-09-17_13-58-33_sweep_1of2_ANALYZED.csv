@@ -1,5 +1,5 @@
 # schema_version=1
-# evaluated_at=2026-09-17T16:52:52.768364
+# evaluated_at=2026-10-09T21:32:06.589823
 # tool_version=2.0.0
 # raw_source_file=2026-09-17_13-58-33_sweep_1of2_RAW.csv
 # raw_source_sha256=a6e58cef65e15d36c8caa8fcf5d00020f58cf7f866957a760f99308c7c30c18f
@@ -7,7 +7,7 @@
 # calibration_raw_zero=-149644.865846109
 # calibration_sha256=9b0988b94a70717726bb74783aed83147a31818f796e96cc3fc86a2e33011bb8
 # validation_file=config/validation.json
-# validation_sha256=7735d1cdb190977097706548e8f96933bbe4d9d10d74d27d0bf905061a10c9b5
+# validation_sha256=a3806657e4ec288a2289c6315c5ddabb3cb7a74864b23d4989814f1f7be53c52
 # run_status=VALID
 # run_findings=[]
 # raw_schema_version=1
