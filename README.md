@@ -46,35 +46,51 @@ Before the main series, the measurement chain was checked in six steps
 | Settle time per stage | max 924 ms measured → 1000 ms used |
 | Repeatability | SD < 1.2 % for thrust, current and RPM |
 
-## Quick start (no hardware needed)
+## Usage
 
 Python 3.10 or newer.
 
 ```bash
-pip install pyserial numpy pandas matplotlib rich textual textual-plotext pytest
+pip install pyserial numpy pandas matplotlib rich textual textual-plotext
+```
 
-# Record with the built-in simulator instead of the real device
-# (one RAW file per cycle, stop with Ctrl+C)
-python testbench.py record --simulate
+### Measuring with the test stand
 
-# Analyze, compare and plot
-python testbench.py analyze data/raw/<file>_RAW.csv
-python testbench.py compare --label demo data/processed/<file>_ANALYZED.csv ...
-python testbench.py plot data/comparisons/<file>_COMPARISON.csv
+The ESP32 is connected via USB (default port `/dev/ttyUSB0`, change with
+`--port`). The run itself is started on the device with the arm button.
 
-# Or use the real data in this repository
-python testbench.py plot --kind g_per_w_vs_thrust data/comparisons/Hauptmessreihe/*18v_COMPARISON.csv
+```bash
+# Guided session: short setup questions, live view during the run,
+# results and plots after the last repetition
+python testbench.py session
 
-# Guided session with live view in the terminal
-python testbench.py session --simulate
+# Or only record RAW files, without questions
+python testbench.py record
 
-# Tests
-python -m pytest
+# Load cell calibration with reference weights
+python testbench.py calibrate
+```
+
+### Evaluating data
+
+Every stage can also be started alone, for example to analyze old RAW files
+again with a changed `validation.json`:
+
+```bash
+python testbench.py analyze data/raw/Hauptmessreihe/2026-09-17_13-58-33_sweep_1of2_RAW.csv
+python testbench.py compare --label <name> <ANALYZED file> <ANALYZED file> ...
+python testbench.py plot --kind g_per_w_vs_thrust <COMPARISON file> ...
 ```
 
 Run `python testbench.py <command> --help` for all options.
 
-Firmware: `cd firmware && pio run`.
+### Development
+
+- Firmware: `cd firmware && pio run`
+- Tests: `python -m pytest`
+- `record` and `session` accept `--simulate`. A built-in simulator then
+  replaces the device, so the software can be tested without the test stand.
+  The simulated values are not real measurements.
 
 ## Repository structure
 
