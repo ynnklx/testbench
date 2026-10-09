@@ -8,6 +8,8 @@ process that is **traceable, reproducible and honest about its errors**:
 every result file says where it comes from, raw data is never changed, and
 every point that looks wrong is marked, not deleted.
 
+![Test stand (CAD rendering): controller box and load cell rig](docs/images/title_render.png)
+
 ![Efficiency vs. thrust, three motors at 18 V](data/plots/Hauptmessreihe/1800kv-prop365-18v_vs_2450kv2207-prop365-18v_vs_2750kv-prop365-18v_efficiency_vs_thrust.png)
 
 *Efficiency (g/W) over thrust for three motors with the same propeller at
@@ -31,6 +33,10 @@ ESP32 firmware  ->  Acquisition  ->  Analysis  ->  Comparison  ->  Plots
   calibration changes.
 
 Details and reasons for each decision: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+![Live view during a sweep](docs/images/session_live_view.png)
+
+*Live view of `testbench.py session` during a sweep (2306 motor, 12 V, 70 % throttle).*
 
 ## Validation
 
@@ -108,9 +114,20 @@ Run `python testbench.py <command> --help` for all options.
 
 ## Hardware
 
+![Complete setup with lab power supply](docs/images/setup.jpg)
+
+*Load cell rig with motor and propeller (left), controller box (middle),
+lab power supply (right).*
+
+![Controller box opened](docs/images/controller.jpg)
+
+*Inside the controller box: ESP32 on a screw terminal board, current sensor
+and ESC with active cooling. Display and arm button in the lid.*
+
 ESP32 WROOM-32, 2 kg load cell with HX711, INA226 current sensor
 (0.002 Ω shunt), T-Hobby F35A ESC (AM32 firmware), lab power supply 10 A.
-Full list and pin assignment in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#hardware).
+Frame and housing are 3D printed. Full list and pin assignment in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#hardware).
 
 ## Development with AI support
 
