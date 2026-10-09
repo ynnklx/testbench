@@ -110,7 +110,7 @@ Run `python testbench.py <command> --help` for all options.
 | `config/` | `calibration.json` (load cell fit), `validation.json` (all thresholds, each with its source) |
 | `data/` | Real measurement data, see [data/README.md](data/README.md) |
 | `tests/` | Automated tests (pytest) |
-| `docs/` | Architecture and development log |
+| `docs/` | Architecture, development log, [HX711 outlier finding](docs/findings/hx711-outlier.md) |
 
 ## Hardware
 

@@ -282,6 +282,11 @@ FreeRTOS this happens when an interrupt falls into the bit-bang loop. The 25
 clock pulses are therefore in a critical section (~100 µs). DOUT polling has a
 timeout. The 24-bit value is signed and is extended to int32.
 
+**Single HX711 values can be corrupted.** Now and then one sample is wrong by
+about 2¹⁸ counts (one flipped bit), with normal values right before and after.
+The median per window ignores it; the MAD rule marks it. See
+[findings/hx711-outlier.md](findings/hx711-outlier.md).
+
 **Blocking I²C in `loop()` breaks the serial protocol.** A display redraw on
 every HX711 sample over slow I²C blocked `loop()` so long that the serial input
 buffer overflowed (broken `OK` answers). Redraw is limited to ~3 Hz.
