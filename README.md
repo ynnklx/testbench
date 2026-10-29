@@ -36,7 +36,7 @@ Details and reasons for each decision: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.
 
 ![Live view during a sweep](docs/images/session_live_view.png)
 
-*Live view of `testbench.py session` during a sweep (2306 motor, 12 V, 70 % throttle).*
+*Live view of `testbench.py session` during a sweep (2306 motor, 12 V).*
 
 ## Validation
 
