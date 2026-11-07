@@ -22,6 +22,13 @@ every point that looks wrong is marked, not deleted.
 Full project documentation in German: concept, mechanical and electronic design,
 test automation, validation and results. An English version is available on request.
 
+## Video: Demo Run (YouTube)
+
+[![Automated test run on the thrust stand](https://img.youtube.com/vi/bWamTexU-FU/hqdefault.jpg)](https://youtu.be/bWamTexU-FU)
+
+Automated test run from start to finish: arming, 3 s countdown with zero-point capture,
+throttle sweep up and down in 2.5% steps, and live data acquisition on the host PC.
+
 ## How it works
 
 ```
