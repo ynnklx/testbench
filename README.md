@@ -142,3 +142,24 @@ The firmware and the Python tools were implemented with the help of Claude
 Code. I defined the test concept, requirements, test logic, interfaces and
 validation strategy myself. The resulting measurement chain was then checked
 with independent measuring equipment.
+
+## Safety and disclaimer
+
+This is a private project, documented for learning and reference. It is not
+a certified measuring device and not a finished product.
+
+Spinning propellers can cause serious injuries. Power supplies and batteries
+can deliver high currents and cause fire. If you build or use anything from
+this repository, you do so at your own risk. Mount the rig securely, stay out
+of the propeller plane, remove the propeller while working on the setup and
+never leave a running test unattended.
+
+Check the motor direction and the propeller orientation before every run.
+The thrust must press the rocker onto the load cell. With a wrong
+combination the thrust points the other way and the rocker can flip over.
+There is no failsafe for this: neither the firmware nor the mechanics
+detect it.
+
+The software, CAD files and documentation are provided "as is", without
+warranty of any kind. To the extent permitted by law, the author accepts no
+liability for damage or injury resulting from their use.
