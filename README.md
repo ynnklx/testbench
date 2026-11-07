@@ -15,6 +15,13 @@ every point that looks wrong is marked, not deleted.
 *Efficiency (g/W) over thrust for three motors with the same propeller at
 18 V. Each curve is the combination of two repeated runs.*
 
+## Documentation
+
+[Projektdokumentation (PDF, German)](docs/Testbench_Dokumentation_GER.pdf)
+
+Full project documentation in German: concept, mechanical and electronic design,
+test automation, validation and results. An English version is available on request.
+
 ## How it works
 
 ```
