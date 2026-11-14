@@ -11,6 +11,8 @@ precisely.
 import csv
 import json
 
+import pytest
+
 from analysis import analyzer, validation
 from core import calibration, csvio
 
@@ -230,3 +232,21 @@ def test_analyze_synthetic_static_zero_reference_drift_run_finding(tmp_path):
 
     for row in _rows(out_path):
         assert row["stage_promille"] != "0"  # never a pseudo-point
+
+
+def test_analyze_empty_raw_raises_and_writes_nothing(tmp_path):
+    """Header and column line only - what a run looks like when the device
+    stopped streaming. Must not turn into a VALID ANALYZED file."""
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    raw_path = raw_dir / "2026-09-11_10-00-00_sweep_RAW.csv"
+    _RowBuilder().write(raw_path, [
+        "mode=sweep",
+        "params=start=150 step=25 settle_ms=1000 hold_ms=2500 rpm_limit=28000 "
+        "temp_max_c=85 sag_fraction=0.90 pole_pairs=7",
+    ])
+
+    out_dir = tmp_path / "processed"
+    with pytest.raises(analyzer.EmptyRunError):
+        analyzer.analyze(raw_path, out_dir=out_dir)
+    assert not out_dir.exists() or not any(out_dir.iterdir())

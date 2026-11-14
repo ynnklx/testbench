@@ -19,6 +19,13 @@ from core import calibration, csvio, naming
 DEFAULT_OUT_DIR = pathlib.Path(__file__).resolve().parent.parent / "data" / "processed"
 
 
+class EmptyRunError(ValueError):
+    """The RAW file has no measurement point at all. Writing an ANALYZED file
+    with run_status=VALID and zero rows would hide a broken recording (e.g.
+    the device stopped streaming D/I/E lines while # lines still came in),
+    so nothing is written and the caller has to handle it."""
+
+
 @dataclasses.dataclass
 class AnalyzeResult:
     """Everything a caller could want from one analyze() call - acquisition/
@@ -121,6 +128,9 @@ def analyze(raw_path: pathlib.Path, out_dir: pathlib.Path = DEFAULT_OUT_DIR,
     build_result = points.build_points(
         raw_path, cal, test_type, static_promille=static_promille, bin_seconds=bin_seconds,
     )
+    if not build_result.points:
+        raise EmptyRunError(f"{raw_path.name}: no measurement points - the RAW file has no "
+                            f"usable D/I/E data. Nothing written.")
 
     validation.validate_points(build_result.points, val_cfg, test_type, build_result.countdown_voltage_v)
     run_status, run_findings = validation.validate_run(build_result, val_cfg, test_type)
@@ -156,7 +166,10 @@ def analyze(raw_path: pathlib.Path, out_dir: pathlib.Path = DEFAULT_OUT_DIR,
 def main():
     args = parse_args()
     out_dir = args.out_dir if args.out_dir is not None else DEFAULT_OUT_DIR
-    analyze(args.raw_path, out_dir)
+    try:
+        analyze(args.raw_path, out_dir)
+    except EmptyRunError as exc:
+        raise SystemExit(str(exc))
 
 
 if __name__ == "__main__":

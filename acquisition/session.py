@@ -353,6 +353,7 @@ class SessionApp(App):
         self.session_final_written = False
         self.plot_paths = []  # PNGs written alongside the FINAL COMPARISON
         self.plot_error = None  # shown in SESSION SUMMARY instead of crashing the UI
+        self.empty_run_error = None  # set by _show_results, ends the run loop
 
     def compose(self) -> ComposeResult:
         yield Static(
@@ -511,6 +512,8 @@ class SessionApp(App):
             )
             self.run_index += 1
             self.call_from_thread(self._show_results, path)
+            if self.empty_run_error is not None:
+                return
         self.call_from_thread(self._render_status_panel, False, "all repetitions done")
 
     def _start_run(self) -> None:
@@ -609,7 +612,17 @@ class SessionApp(App):
             self.query_one("#curve-panel", LiveCurve).set_sweep_points(self.up_points, self.down_points)
 
     def _show_results(self, path: pathlib.Path) -> None:
-        result = analyzer.analyze(path, out_dir=self.analyzed_dir, quiet=True)
+        try:
+            result = analyzer.analyze(path, out_dir=self.analyzed_dir, quiet=True)
+        except analyzer.EmptyRunError as exc:
+            # Further runs in this session would most likely be empty too
+            # (streaming is off on the device), so the run loop stops here.
+            self.empty_run_error = str(exc)
+            self.query_one("#status-panel", Static).update(
+                f"[bold red]RUN WITHOUT DATA[/bold red]\n{exc}\n"
+                f"Check that no other program uses the serial port, then quit (q) "
+                f"and start a new session.")
+            return
         self.raw_paths.append(path)
         self.run_results.append(result)
 
@@ -828,7 +841,9 @@ def main():
         sys.exit(1)
 
     conn.send("START")
-    link.wait_for_line(conn, lambda l: l == "OK START", timeout_s=2.0)
+    if link.wait_for_line(conn, lambda l: l == "OK START", timeout_s=2.0) is None:
+        print("Device did not confirm START - no data would be recorded.", file=sys.stderr)
+        sys.exit(1)
     cal = calibration.try_load()
 
     try:

@@ -114,7 +114,7 @@ class SimulatedLink(Link):
     # firmware/src/esc.cpp - kept in sync by hand.
     _SIM_STAGE_START_PROMILLE = 150  # 15 %
     _SIM_STAGE_STEP_PROMILLE = 25  # 2.5 %
-    _SIM_RPM_MAX = 25000
+    _SIM_RPM_MAX = 28000
     # Compressed compared to the real 1000 ms / 2.5 s.
     _SIM_STAGE_SETTLE_S = 0.1
     _SIM_STAGE_HOLD_S = 0.2
@@ -123,8 +123,8 @@ class SimulatedLink(Link):
     # See class comment - the real firmware constants, not the compressed
     # timing above.
     _SIM_PARAMS_LINE = (
-        "# PARAMS start=150 step=25 settle_ms=1000 hold_ms=2500 rpm_limit=25000 "
-        "temp_max_c=80 sag_fraction=0.90 pole_pairs=7"
+        "# PARAMS start=150 step=25 settle_ms=1000 hold_ms=2500 rpm_limit=28000 "
+        "temp_max_c=85 sag_fraction=0.90 pole_pairs=7"
     )
 
     def __init__(self):

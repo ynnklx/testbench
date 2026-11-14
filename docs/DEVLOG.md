@@ -141,3 +141,9 @@ All published runs were analyzed again with the current `validation.json`.
 All measured values and all comparison results stay exactly the same. Only
 the status labels change: 101 of 554 points go from WARNING to VALID. The 39
 INVALID points stay INVALID.
+
+**2026-11-14 – RPM limit raised to 28000.**
+With 24 V and a 2-blade prop the motor reached the old limit of 25000 rpm at
+95 % throttle. The firmware then ended the run on the way down, so most stages
+had only an upward window. 28000 rpm is still about Mach 0.55 at the tip of a
+5.1" prop.

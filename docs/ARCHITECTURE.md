@@ -231,7 +231,7 @@ Two lines right after `# ARMED (button)`:
 
 ```
 # MODE sweep                       (or: # MODE static 700)
-# PARAMS start=150 step=25 settle_ms=1000 hold_ms=2500 rpm_limit=25000 \
+# PARAMS start=150 step=25 settle_ms=1000 hold_ms=2500 rpm_limit=28000 \
          temp_max_c=85 sag_fraction=0.90 pole_pairs=7
 ```
 

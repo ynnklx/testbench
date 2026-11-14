@@ -49,8 +49,10 @@ const uint32_t STAGE_SETTLE_MS = 1000;
 // and total run time.
 const uint32_t STAGE_HOLD_MS = 2500;
 
-// Safety ceiling for the loaded rig (propeller fitted).
-const uint32_t RPM_LIMIT = 25000;
+// Safety ceiling for the loaded rig (propeller fitted). For the 5.1" props in
+// use this is a tip speed of about Mach 0.55, well below the transonic range.
+// 25000 cut the downward leg of 2-blade sweeps at 24 V short (docs/DEVLOG.md).
+const uint32_t RPM_LIMIT = 28000;
 
 // ESC over-temperature safety cutoff. Chosen by judgement after a real
 // static-mode run at 70% reached 71 degC within 90 s and was still rising

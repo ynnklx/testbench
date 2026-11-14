@@ -492,7 +492,9 @@ def main():
     print(f"Connected: {device_line}")
 
     conn.send("START")
-    link.wait_for_line(conn, lambda l: l == "OK START", timeout_s=2.0)
+    if link.wait_for_line(conn, lambda l: l == "OK START", timeout_s=2.0) is None:
+        print("Device did not confirm START - no data would be recorded.", file=sys.stderr)
+        sys.exit(1)
 
     cal = calibration.try_load()
 
