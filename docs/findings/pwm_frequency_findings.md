@@ -4,7 +4,7 @@
 
 Earlier runs showed irregular, poorly reproducible results. I traced them back to the ESC's *Variable PWM* setting, which changes the switching frequency during operation. This led to a dedicated test of how the PWM frequency affects electrical power and efficiency.
 
-![Electrical power vs. thrust at 12 / 24 / 48 kHz](../data/plots/20260822_pwm_comparison_thrust.png)
+![Electrical power vs. thrust at 12 / 24 / 48 kHz](https://github.com/ynnklx/testbench/blob/main/data/plots/20260822_pwm_comparison_thrust.png?raw=true)
 
 ## Result
 
