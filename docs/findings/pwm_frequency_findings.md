@@ -2,7 +2,7 @@
 
 1800 KV motor, 5x3.7x3 propeller, 20 V. One run each at 12, 24 and 48 kHz.
 
-![Electrical power vs. thrust at 12 / 24 / 48 kHz](../data/plots/20260822_pwm_comparison_thrust.png)
+![Electrical power vs. thrust at 12 / 24 / 48 kHz](https://github.com/ynnklx/testbench/blob/main/data/plots/20260822_pwm_comparison_thrust.png?raw=true)
 
 ## Result
 
